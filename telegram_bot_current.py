@@ -78,6 +78,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Сохраняем потенциальных админов
     admin_chat_ids.add(chat_id)
     
+    # Логируем Chat ID для администратора (только в логи)
+    logger.info(f"📝 Chat ID для настройки: {chat_id}")
+    
     user_data[user_id] = {}
     
     keyboard = [
@@ -98,9 +101,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 💫 Готовы начать путешествие в мир недвижимости? 💫
 Жмите яркую кнопку ниже! 👇✨
-
-🆔 *Ваш Chat ID: {chat_id}*
-    """.format(chat_id=chat_id)
+    """
     
     try:
         await update.message.reply_text(
@@ -150,7 +151,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     if user_id not in user_data:
         try:
             await update.message.reply_text(
-                f"🌈 Давайте начнем с команды /start! 🌈\n✨ Приключение ждет! ✨\n\n🆔 Ваш Chat ID: {chat_id}"
+                "🌈 Давайте начнем с команды /start! 🌈\n✨ Приключение ждет! ✨"
             )
             logger.info(f"✅ Предложение старта отправлено пользователю {user_id}")
         except Exception as e:
