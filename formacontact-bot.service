@@ -1,0 +1,15 @@
+[Unit]
+Description=FormaContact Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=enclude
+WorkingDirectory=/home/enclude/FormaContact
+Environment=PATH=/home/enclude/FormaContact/venv/bin
+ExecStart=/home/enclude/FormaContact/venv/bin/python telegram_bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
