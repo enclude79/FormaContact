@@ -73,6 +73,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     chat_id = update.effective_chat.id
     user_info = f"@{update.effective_user.username or 'no_username'} ({update.effective_user.first_name})"
     
+    # Проверяем параметры deep linking
+    start_param = None
+    if context.args:
+        start_param = context.args[0]
+        logger.info(f"🔗 Deep link параметр: {start_param}")
+    
     logger.info(f"🚀 Команда /start от пользователя {user_id} ({user_info}), Chat ID: {chat_id}")
     
     # Сохраняем потенциальных админов
@@ -82,6 +88,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     logger.info(f"📝 Chat ID для настройки: {chat_id}")
     
     user_data[user_id] = {}
+    
+    # Если пользователь пришел по ссылке с параметром, сразу показываем форму заявки
+    if start_param in ['form', 'request', 'application']:
+        user_data[user_id] = {'step': 'waiting_name'}
+        try:
+            await update.message.reply_text(
+                "🌟 *ДОБРО ПОЖАЛОВАТЬ! ДАВАЙТЕ ОФОРМИМ ЗАЯВКУ!* 🌟\n\n"
+                "✨ Для начала введите ваше имя:\n"
+                "💫 Мы хотим знать, как к вам обращаться! 💫",
+                parse_mode='Markdown'
+            )
+            logger.info(f"✅ Автоматический запуск формы для пользователя {user_id}")
+            return
+        except Exception as e:
+            logger.error(f"❌ Ошибка автоматического запуска формы: {e}")
     
     keyboard = [
         [InlineKeyboardButton("🌟 Оставить заявку 🌟", callback_data='new_request')]
