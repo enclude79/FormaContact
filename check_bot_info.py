@@ -3,9 +3,17 @@
 
 import asyncio
 from telegram import Bot
+import os
+from dotenv import load_dotenv
+
+# Загрузка переменных окружения
+load_dotenv()
 
 # Токен бота
-BOT_TOKEN = "7938681156:AAH2u5fCkOoLPZI9BMQxEdxdSId5xsvycaw"
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+if not BOT_TOKEN:
+    print("❌ Ошибка: BOT_TOKEN не найден в переменных окружения")
+    exit(1)
 
 async def get_bot_info():
     """Получаем информацию о боте"""

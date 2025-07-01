@@ -3,8 +3,17 @@
 
 import asyncio
 from telegram import Bot
+import os
+from dotenv import load_dotenv
 
-BOT_TOKEN = '7938681156:AAH2u5fCkOoLPZI9BMQxEdxdSId5xsvycaw'
+# Загрузка переменных окружения
+load_dotenv()
+
+# Получение токена бота из переменных окружения
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+if not BOT_TOKEN:
+    print("❌ Ошибка: BOT_TOKEN не найден в переменных окружения")
+    exit(1)
 
 async def get_admin_chat_id():
     """Получаем Chat ID администратора из последних обновлений"""

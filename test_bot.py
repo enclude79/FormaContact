@@ -3,9 +3,18 @@
 
 import requests
 import json
+import os
+from dotenv import load_dotenv
+
+# Загрузка переменных окружения
+load_dotenv()
 
 # Конфигурация
-BOT_TOKEN = "7938681156:AAH2u5fCkOoLPZI9BMQxEdxdSId5xsvycaw"
+BOT_TOKEN = os.getenv('BOT_TOKEN')
+if not BOT_TOKEN:
+    print("❌ Ошибка: BOT_TOKEN не найден в переменных окружения")
+    exit(1)
+    
 BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
 def test_bot():
@@ -54,7 +63,11 @@ def test_bot():
         print(f"❌ Ошибка получения обновлений: {e}")
     
     # 3. Тест отправки сообщения самому себе (админу)
-    admin_chat_id = 1717714804
+    admin_chat_id = os.getenv('ADMIN_CHAT_ID')
+    if not admin_chat_id:
+        print("❌ Ошибка: ADMIN_CHAT_ID не найден в переменных окружения")
+        return False
+        
     test_message = "🧪 Тестовое сообщение от бота"
     
     try:
